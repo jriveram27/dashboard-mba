@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Ejecutivo - Seguros Andina</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f4f6f9;
+    margin: 0;
+}
+
+header {
+    background: #1f4e79;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    padding: 20px;
+}
+
+.kpis {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.kpi {
+    background: white;
+    padding: 15px;
+    width: 22%;
+    border-radius: 8px;
+    text-align: center;
+}
+
+h2 {
+    margin-top: 40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+    <h1>Dashboard Ejecutivo</h1>
+    <h3>Seguros Andina</h3>
+</header>
+
+<div class="container">
+
+    <!-- KPIs -->
+    <div class="kpis">
+        <div class="kpi">
+            <h3>Ingresos Totales</h3>
+            <p id="ventas"></p>
+        </div>
+
+        <div class="kpi">
+            <h3>Ratio Siniestros</h3>
+            <p id="ratio"></p>
+        </div>
+
+        <div class="kpi">
+            <h3>Retención</h3>
+            <p id="retencion"></p>
+        </div>
+
+        <div class="kpi">
+            <h3>Churn</h3>
+            <p id="churn"></p>
+        </div>
+    </div>
+
+    <!-- Gráfico -->
+    <canvas id="grafico"></canvas>
+
+    <!-- KPIs Documento -->
+    <h2>Definición de KPIs</h2>
+    <ul>
+        <li><b>Ingresos Totales:</b> Primas cobradas (Meta: 120M)</li>
+        <li><b>Ratio de Siniestros:</b> Siniestros / Ventas (&lt; 65%)</li>
+        <li><b>Retención:</b> Renovadas / Total (&gt; 80%)</li>
+        <li><b>Churn:</b> Canceladas / Total (&lt; 10%)</li>
+    </ul>
+
+    <!-- Storytelling -->
+    <h2>Insights Estratégicos</h2>
+    <ul>
+        <li>El negocio muestra crecimiento en ventas pero con variabilidad mensual.</li>
+        <li>El ratio de siniestros impacta la rentabilidad en productos específicos.</li>
+        <li>La retención es clave para la sostenibilidad del negocio.</li>
+        <li>El churn indica oportunidades de mejora en fidelización.</li>
+    </ul>
+
+</div>
+
+<script>
+
+// DATOS SIMULADOS (puedes cambiarlos luego)
+let ventas = [10000, 15000, 13000, 17000, 20000];
+let siniestros = [5000, 9000, 8000, 10000, 12000];
+let estados = ["Nueva","Renovada","Cancelada","Renovada","Nueva"];
+
+// KPI CALCULOS
+let totalVentas = ventas.reduce((a,b)=>a+b,0);
+let totalSiniestros = siniestros.reduce((a,b)=>a+b,0);
+
+let renovadas = estados.filter(x => x=="Renovada").length;
+let canceladas = estados.filter(x => x=="Cancelada").length;
+
+let ratio = totalSiniestros / totalVentas;
+let retencion = renovadas / estados.length;
+let churn = canceladas / estados.length;
+
+// MOSTRAR KPIs
+document.getElementById("ventas").innerHTML = "$" + totalVentas;
+document.getElementById("ratio").innerHTML = (ratio*100).toFixed(2) + "%";
+document.getElementById("retencion").innerHTML = (retencion*100).toFixed(2) + "%";
+document.getElementById("churn").innerHTML = (churn*100).toFixed(2) + "%";
+
+// GRAFICO
+new Chart(document.getElementById("grafico"), {
+    type: 'line',
+    data: {
+        labels: ["Mes1","Mes2","Mes3","Mes4","Mes5"],
+        datasets: [
+            {
+                label: "Ventas",
+                data: ventas,
+                borderColor: "blue"
+            },
+            {
+                label: "Siniestros",
+                data: siniestros,
+                borderColor: "red"
+            }
+        ]
+    }
+});
+
+</script>
+
+</body>
+</html>
